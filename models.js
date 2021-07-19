@@ -25,7 +25,7 @@ News.init ({
     },
    
     Textbody: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
     },
     Date: {
         type: DataTypes.DATE,
@@ -84,7 +84,7 @@ Events.init ({
     },
    
     Description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
     },
     Date: {
         type: DataTypes.DATE,
