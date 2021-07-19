@@ -7,6 +7,8 @@ const sequelize = new Sequelize('d8rq7a2idv072', DB_USERNAME, DB_PASSWORD, {
     host: DB_HOST,
     port: 5432,
     dialect: 'postgres',
+    native: true,
+    ssl: true
 } );
 
 sequelize
