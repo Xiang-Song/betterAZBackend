@@ -67,7 +67,7 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 })
 
-router.post('/createBanner',(req, res, next) =>{
+router.post('/replaceBanner',(req, res, next) =>{
   passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
     if (err) {
       console.log(err);
@@ -76,6 +76,9 @@ router.post('/createBanner',(req, res, next) =>{
       console.log(info.message);
       res.status(401).send(info.message)
     } else {
+        await Banner.destroy({
+          truncate: true
+        });
         let banner = await Banner.create(req.body)
         res.status(201).send(
           banner
@@ -103,7 +106,28 @@ router.post('/createNews',(req, res, next) =>{
   })(req, res, next);
 })
 
-router.post('/createEvents',(req, res, next) =>{
+router.post('/deleteNews',(req, res, next) =>{
+  passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.status(401).send(info.message)
+    } else {
+        await News.destroy({
+          where: {
+            id: req.body.id
+          }
+        })
+        res.status(201).send(
+          'one record deleted successfully'
+        )
+    }
+  })(req, res, next);
+})
+
+router.post('/createEvent',(req, res, next) =>{
   passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
     if (err) {
       console.log(err);
@@ -121,7 +145,25 @@ router.post('/createEvents',(req, res, next) =>{
   })(req, res, next);
 })
 
-router.post('/createLocations',(req, res, next) =>{
+router.post('/deleteEvent',(req, res, next) =>{
+  passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.status(401).send(info.message)
+    } else {
+        await Events.destroy({where: {id: req.body.id}})
+        res.status(201).send(
+          'one record deleted successfully'
+        )
+      
+    }
+  })(req, res, next);
+})
+
+router.post('/createLocation',(req, res, next) =>{
   passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
     if (err) {
       console.log(err);
@@ -133,6 +175,24 @@ router.post('/createLocations',(req, res, next) =>{
         let location = await Locations.create(req.body)
         res.status(201).send(
           location
+        )
+      
+    }
+  })(req, res, next);
+})
+
+router.post('/deleteLocation',(req, res, next) =>{
+  passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.status(401).send(info.message)
+    } else {
+        await Locations.destroy({where: {id: req.body.id}})
+        res.status(201).send(
+          "one record deleted successfully"
         )
       
     }
