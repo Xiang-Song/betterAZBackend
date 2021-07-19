@@ -1,10 +1,23 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const { sequelize } = require('./db');
 
+class Users extends Model {}
 
-class News extends Model {
+Users.init({
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+},{
+    sequelize,
+    modelName: 'Users'
+});
 
-}
+class News extends Model {}
 
 News.init ({
     Headline:{
@@ -21,10 +34,73 @@ News.init ({
         type: DataTypes.STRING,
     }
 },{
-    sequelize, // We need to pass the connection instance
-    modelName: 'News' // We need to choose the model name
+    sequelize, 
+    modelName: 'News' 
+});
+
+class Banner extends Model {}
+
+Banner.init ({
+    Headline:{
+        type: DataTypes.STRING,
+    }
+},{
+    sequelize, 
+    modelName: 'Banner' 
+});
+
+class Locations extends Model {}
+
+Locations.init ({
+    Location:{
+        type: DataTypes.STRING,
+    },
+   
+    Address: {
+        type: DataTypes.STRING,
+    },
+    Hours: {
+        type: DataTypes.STRING,
+    },
+    Days: {
+        type: DataTypes.STRING,
+    },
+    Priority: {
+        type: DataTypes.INTEGER,
+    },
+    County: {
+        type: DataTypes.STRING,
+    }
+},{
+    sequelize, 
+    modelName: 'Locations' 
+});
+
+class Events extends Model {}
+
+Events.init ({
+    Headline:{
+        type: DataTypes.STRING,
+    },
+   
+    Description: {
+        type: DataTypes.STRING,
+    },
+    Date: {
+        type: DataTypes.DATE,
+    },
+    Time: {
+        type: DataTypes.STRING,
+    },
+    Location: {
+        type: DataTypes.INTEGER,
+    }
+},{
+    sequelize, 
+    modelName: 'Events' 
 });
 
 sequelize.sync({alter:true});
 
-module.exports = { News };
+module.exports = {Users, News, Banner, Locations, Events};
+
