@@ -25,7 +25,7 @@ router.post('/register', (req, res, next) => {
           where: {
             username: data.username,
           },
-        }).then(() => {
+        }).then(user => {
             console.log('user created in db');
             res.status(200).send({ message: 'user created' }); // nothing to update, just return status
         });

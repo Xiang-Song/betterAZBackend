@@ -5,7 +5,7 @@ const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const {News, Banner, Locations, Events} = require('../models');
+const { Users } = require('../models');
 
 passport.use(
     'register',
