@@ -93,7 +93,7 @@ Events.init ({
         type: DataTypes.STRING,
     },
     Location: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
     }
 },{
     sequelize, 
