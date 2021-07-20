@@ -76,14 +76,14 @@ router.post('/replaceBanner',(req, res, next) =>{
       console.log(info.message);
       res.status(401).send(info.message)
     } else {
-        await Banner.destroy({
+      if(req.body.Headline !== '')
+        {await Banner.destroy({
           truncate: true
         });
         let banner = await Banner.create(req.body)
         res.status(201).send(
           banner
-        )
-      
+        )}
     }
   })(req, res, next);
 })
