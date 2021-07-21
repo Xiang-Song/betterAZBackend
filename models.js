@@ -32,6 +32,12 @@ News.init ({
     },
     Source: {
         type: DataTypes.STRING,
+    },
+    ImageLink: {
+        type: DataTypes.STRING,
+    },
+    VideoLink: {
+        type: DataTypes.STRING,
     }
 },{
     sequelize, 
