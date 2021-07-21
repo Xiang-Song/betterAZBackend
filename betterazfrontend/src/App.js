@@ -1,9 +1,6 @@
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Login from "./components/Login";
-import Banner from "./components/Banner";
-import News from "./components/News";
-import Events from "./components/Events";
-import Locations from "./components/Locations"
+import Home from './components/Home'
 
 import './App.css'
 
@@ -12,7 +9,8 @@ const App = () => {
     <div>
       <BrowserRouter>
       <Switch>
-      <Route path="/login" component={Login} />
+      <Route path="/admin" component={Login} />
+      <Route path="/home" component={Home} />
       </Switch>
       </BrowserRouter>
     </div>
