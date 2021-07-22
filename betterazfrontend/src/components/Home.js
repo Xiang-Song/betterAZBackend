@@ -189,7 +189,7 @@ const Home = () => {
                             </Card>
                         )
                     })}
-                    <div className='dp-jc-center link'>...MORE LOCATIONS</div>
+                    <div><Link to='/locations' className='link'>...MORE LOCATIONS</Link></div>
                 </Col>
                 <Col className='pad-l-1vw-r-5vw dp flow-column'>
                     <div>
@@ -205,7 +205,7 @@ const Home = () => {
                                 </Card>
                             )
                         })}
-                        <div className='dp-jc-center link'>...MORE EVENTS</div>
+                        <div><Link to='/events' className='link'>...MORE EVENTS</Link></div>
                     </div>
                     <div className='dp-jc-space mt-5'>
                         <Button variant="danger" className='wide-45'>Voluteer</Button>

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { BAContext } from '../context/BAcontext'
-import {Alert, Button, Image, Row, Col, Card} from 'react-bootstrap'
+import {Image, Row, Col, Card} from 'react-bootstrap'
 import heading from '../image/heading.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './home.css'
@@ -39,7 +39,7 @@ const News = () => {
 
         getBanner();
         getNews();
-        
+        window.scrollTo(0, 0);
     },[])
 
     const getNewsDetail = async (id) =>{
@@ -67,7 +67,7 @@ const News = () => {
                 </Row>
             </Card>
             <Row>
-            <h2 className = 'self-center s-title wg-bg'>News Room</h2><br />
+            <h2 className = 'self-center s-title wg-bg mt-3'>News Room</h2><br />
             {state.news.sort((a, b) => (a.Date < b.Date) ? 1 : -1).map((item)=>{
                     return(
                         item.ImageLink ? 

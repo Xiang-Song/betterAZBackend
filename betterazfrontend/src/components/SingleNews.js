@@ -20,9 +20,8 @@ const SingleNews = () => {
                 setState (state=>({...state, detailNews:data[0]}))
             }
         }
-
         getNewsDetail(newsId);
-        
+        window.scrollTo(0, 0);
     },[])
     return (
         <div className = 'wide-90 m-l-5vw'>
