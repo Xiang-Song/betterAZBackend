@@ -17,6 +17,11 @@ router.get('/news', async function(req, res, next) {
   res.json(news);
 })
 
+router.get('/news/:id', async function(req, res, next) {
+  let news = await News.findAll({where: {id: req.params.id}});
+  res.json(news);
+})
+
 router.get('/events', async function(req, res, next) {
   let events= await Events.findAll();
   res.json(events);
