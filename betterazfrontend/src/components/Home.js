@@ -1,70 +1,67 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useContext} from 'react'
+import { Link } from 'react-router-dom'
+import {Button, Alert, Image, Row, Col, Card} from 'react-bootstrap'
 import heading from '../image/heading.jpg'
-import {Button, Alert, Container, Image, Row, Col, Card} from 'react-bootstrap'
+import { BAContext } from '../context/BAcontext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './home.css'
 
 const Home = () => {
-
-    const [banner, setBanner] = useState([{Headline:''}]);
-    const [news, setNews] = useState([{Headline: '', Textbody:'', Date: '', Source: '', ImageLink: '', VideoLink: ''}]);
-    const [events, setEvents] = useState([{Headline: '', Description: '', Date: '', Time: '', Location: ''}]);
-    const [locations, setLocations] = useState([{Location: '', Address: '', Hours: '', Days: '', Priority: '', County: '' }]);
-
+    const [state, setState] = useContext(BAContext);
     useEffect(()=>{
         const getBanner = async() => {
             let res = await fetch('https://floating-thicket-57272.herokuapp.com/banner');
             if (res.status !== 200) {
-                setBanner([])
+                setState(state=>({...state, banner: [{Headline:''}]}))
             } else {
                 let data = await res.json();
                 let bannerList = [];
                 for (let item of data){
                     bannerList.push(item);
                 }
-                setBanner(bannerList)
+                setState(state=>({...state, banner: bannerList}))
             }
         }
     
         const getNews = async()=>{
             let res = await fetch('https://floating-thicket-57272.herokuapp.com/news');
             if (res.status !== 200) {
-                setNews([])
+                setState(state=>({...state, news: [{Headline: '', Textbody:'', Date: '', Source: '', ImageLink: '', VideoLink: ''}]}))
             } else {
                 let data = await res.json();
                 let newsList = [];
                 for (let item of data){
                     newsList.push(item);
                 }
-                setNews(newsList)
+                setState(state=>({...state, news: newsList}))
             }
         }
     
         const getEvents = async()=>{
             let res = await fetch('https://floating-thicket-57272.herokuapp.com/events');
             if (res.status !== 200) {
-                setEvents([])
+                setState(state=>({...state, events: [{Headline: '', Description: '', Date: '', Time: '', Location: ''}]}))
             } else {
                 let data = await res.json();
                 let eventsList = [];
                 for (let item of data){
                     eventsList.push(item);
                 }
-                setEvents(eventsList)
+                setState(state=>({...state, events: eventsList}))
             }
         }
     
         const getLocations = async()=>{
             let res = await fetch('https://floating-thicket-57272.herokuapp.com/locations');
             if (res.status !== 200) {
-                setLocations([])
+                setState(state=>({...state, locations: [{Location: '', Address: '', Hours: '', Days: '', Priority: '', County: ''}]}))
             } else {
                 let data = await res.json();
                 let locationsList = [];
                 for (let item of data){
                     locationsList.push(item);
                 }
-                setLocations(locationsList)
+                setState(state=>({...state, locations: locationsList}))
             }
         }
         getBanner();
@@ -73,6 +70,17 @@ const Home = () => {
         getLocations();
     },[])
 
+    const getNewsDetail = async (id) =>{
+        localStorage.setItem('newsId', id );
+        let res = await fetch('https://floating-thicket-57272.herokuapp.com/news/' + id);
+        if (res.status !== 200) {
+            setState(state=>({...state, detailNews:{}, error:'This news is not available now!'}))
+        } else {
+            let data = await res.json();
+            setState (state=>({...state, detailNews:data[0]}))
+        }
+    }
+
     const today = new Date();
     const checkdate = new Date(today);
     checkdate.setDate(checkdate.getDate() - 2)
@@ -80,11 +88,11 @@ const Home = () => {
     return (
         <div className='container-fluid w-bg'>
             <Alert variant='light w-bg mt-5' >
-                <Alert.Heading className='self-center lg-red-title'>{banner[0].Headline}</Alert.Heading>
+                <Alert.Heading className='self-center lg-red-title'>{state.banner[0].Headline}</Alert.Heading>
             </Alert>
             <Card className= 'relative border-none'>
                 <Image src={heading} className='wide-80 b-50 m-l-10vw'/>
-                <Button href="#" variant="danger"className='absolute ab-right-up'>Donate</Button>
+                <Button href="https://secure.actblue.com/donate/azvoters" target='_blank' variant="danger"className='absolute ab-right-up'>Donate</Button>
             </Card>
             
             <Row className='mb-5'>
@@ -97,16 +105,16 @@ const Home = () => {
                     </div>
                     <div className='dp-jc-space'>
                         <Button variant="danger" className='wide-45'>Voluteer</Button>
-                        <Button variant="danger" className='wide-45'>Donate</Button>
+                        <Button href="https://secure.actblue.com/donate/azvoters" target='_blank' variant="danger" className='wide-45'>Donate</Button>
                     </div>
                 </Col>
                 
                 <Col xs lg = '8' className='pad-l-1vw-r-5vw'> 
                 <h3 className = 'self-center s-title wg-bg'>WHAT'S HOT</h3>
-                {news.sort((a, b) => (a.Date < b.Date) ? 1 : -1).slice(0,3).map((item)=>{
+                {state.news.sort((a, b) => (a.Date < b.Date) ? 1 : -1).slice(0,3).map((item)=>{
                     return(
                         item.ImageLink ? 
-                        <Card className='border-none w-bg'>
+                        <Card key={item.id} className='border-none w-bg'>
                             <Row className='pad-l-5px'>
                                 <Col xs lg = '4'>
                                     <Image src={item.ImageLink} className='w-20vw mt-4'/>
@@ -114,13 +122,19 @@ const Home = () => {
                                 <Col xs lg = '8'>
                                     <Card.Body>
                                         <Card.Title className='c-title'>{item.Headline}</Card.Title>
-                                        <Card.Text className='light-content fs-1h'>{item.Date.split('T')[0]} - {item.Textbody.substring(0,200)}...<span className='link'>Read More</span></Card.Text>
+                                        <Card.Text className='light-content fs-1h'>
+                                            {item.Date.split('T')[0]} - {item.Textbody.substring(0,200)}
+                                            <Link to={'newsdetails/'+item.id} 
+                                            onClick={()=>getNewsDetail(item.id)} 
+                                            className='link'>
+                                                ...Read More
+                                            </Link></Card.Text>
                                     </Card.Body>
                                 </Col>
                             </Row>
                         </Card>
                         : item.VideoLink ?
-                        <Card className='border-none w-bg'>
+                        <Card key={item.id} className='border-none w-bg'>
                             <Row className='pad-l-5px'>
                                 <Col xs lg = '4'>
                                     <div className="embed-responsive embed-responsive-16by9">
@@ -131,31 +145,42 @@ const Home = () => {
                                 <Col xs lg = '8'>
                                     <Card.Body>
                                         <Card.Title  className='c-title'>{item.Headline}</Card.Title>
-                                        <Card.Text className='light-content fs-1h'>{item.Date.split('T')[0]} - {item.Textbody.substring(0,200)}...<span className='link'>Read More</span></Card.Text>
+                                        <Card.Text className='light-content fs-1h'>
+                                            {item.Date.split('T')[0]} - {item.Textbody.substring(0,200)}
+                                            <Link to={'newsdetails/'+item.id} 
+                                            onClick={()=>getNewsDetail(item.id)} 
+                                            className='link'>
+                                                ...Read More
+                                            </Link></Card.Text>
                                     </Card.Body>
                                 </Col>
                             </Row>
                         </Card>
                         :
-                        <Card className='border-none w-bg'>
+                        <Card key={item.id} className='border-none w-bg'>
                             <Card.Body>
                                 <Card.Title  className='c-title'>{item.Headline}</Card.Title>
-                                <Card.Text className='light-content fs-1h'>{item.Date.split('T')[0]} - {item.Textbody.substring(0,200)}...<span className='link'>Read More</span></Card.Text>
+                                <Card.Text className='light-content fs-1h'>
+                                            {item.Date.split('T')[0]} - {item.Textbody.substring(0,200)}
+                                            <Link to={'newsdetails/'+item.id} 
+                                            onClick={()=>getNewsDetail(item.id)} 
+                                            className='link'>
+                                                ...Read More
+                                            </Link></Card.Text>
                             </Card.Body>
                         </Card>
-                        
-                    )
+                        )
                 })}
-                <div className='link'>...MORE NEWS</div>
+                <div ><Link to='/news' className='link'>...MORE NEWS</Link></div>
                 </Col>
             </Row>
 
             <Row>
                 <Col className='pad-l-5vw-r-1vw'>
                     <h3 className = 'self-center s-title wg-bg'>WHERE TO SIGN?</h3>
-                    {locations.sort((a, b)=>(a.Priority < b.Priority) ? 1 : -1).slice(0,5).map((item)=>{
+                    {state.locations.sort((a, b)=>(a.Priority < b.Priority) ? 1 : -1).slice(0,5).map((item)=>{
                         return(
-                            <Card className='border-none w-bg'>
+                            <Card key={item.id} className='border-none w-bg'>
                                 <Card.Title className='dp-jc-center c-title mt-4'>{item.Location}</Card.Title>
                                 <Card.Text className='light-content fs-1h'>
                                     <p className='dp-jc-center mb-1'>HOURS: {item.Hours} | DAYS: {item.Days} | COUNTY: {item.County}</p>
@@ -169,9 +194,9 @@ const Home = () => {
                 <Col className='pad-l-1vw-r-5vw dp flow-column'>
                     <div>
                         <h3 className = 'self-center s-title wg-bg'>EVENTS</h3>
-                        {events.sort((a, b)=>(a.Date > b.Date) ? 1 : -1).filter(e=>new Date(e.Date) > checkdate).slice(0,4).map((item)=>{
+                        {state.events.sort((a, b)=>(a.Date > b.Date) ? 1 : -1).filter(e=>new Date(e.Date) > checkdate).slice(0,4).map((item)=>{
                             return(
-                                <Card className='border-none w-bg'>
+                                <Card key={item.id} className='border-none w-bg'>
                                     <Card.Title className='dp-jc-center c-title mt-3'>{item.Headline}</Card.Title>
                                     <Card.Text className='light-content fs-1h'>
                                         <p className='dp-jc-center mb-1'>{item.Description}</p>
@@ -184,7 +209,7 @@ const Home = () => {
                     </div>
                     <div className='dp-jc-space mt-5'>
                         <Button variant="danger" className='wide-45'>Voluteer</Button>
-                        <Button variant="danger" className='wide-45'>Donate</Button>
+                        <Button href="https://secure.actblue.com/donate/azvoters" target='_blank' variant="danger" className='wide-45'>Donate</Button>
                     </div>
                     
                 </Col>
