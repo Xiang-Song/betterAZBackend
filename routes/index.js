@@ -4,7 +4,7 @@ var{News, Banner, Locations, Events} = require('../models')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express-Postgre' });
 });
 
 router.get('/banner', async function(req, res, next) {
