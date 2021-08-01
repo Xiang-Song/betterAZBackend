@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var{News, Banner, Locations, Events, Social} = require('../models')
+var{News, Banner, Locations, Events, Twitter, Facebook} = require('../models')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

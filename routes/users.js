@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 
-let {Users, News, Banner, Locations, Events, Social} = require('../models');
+let {Users, News, Banner, Locations, Events, Twitter, Facebook} = require('../models');
 
 router.post('/register', (req, res, next) => {
   passport.authenticate('register', (err, user, info) => {
@@ -144,6 +144,24 @@ router.post('/createEvent',(req, res, next) =>{
   })(req, res, next);
 })
 
+router.post('/updateEvent',(req, res, next) =>{
+  passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.status(401).send(info.message)
+    } else {
+        let event = await Events.update(req.body,{where: {id: req.body.id}})
+        res.status(201).send(
+          event
+        )
+      
+    }
+  })(req, res, next);
+})
+
 router.post('/deleteEvent',(req, res, next) =>{
   passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
     if (err) {
@@ -198,7 +216,7 @@ router.post('/deleteLocation',(req, res, next) =>{
   })(req, res, next);
 })
 
-router.post('/social',(req, res, next) =>{
+router.post('/replaceTwitter',(req, res, next) =>{
   passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
     if (err) {
       console.log(err);
@@ -207,13 +225,37 @@ router.post('/social',(req, res, next) =>{
       console.log(info.message);
       res.status(401).send(info.message)
     } else {
-      let social = await Social.create(req.body)
-      res.status(201).send(
-        social
-      )
-      
+        await Twitter.destroy({
+          truncate: true
+        });
+        let twitter = await Twitter.create(req.body)
+        res.status(201).send(
+          twitter
+        )
     }
   })(req, res, next);
 })
+
+router.post('/replaceFb',(req, res, next) =>{
+  passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.status(401).send(info.message)
+    } else {
+        await Facebook.destroy({
+          truncate: true
+        });
+        let fb = await Facebook.create(req.body)
+        res.status(201).send(
+          fb
+        )
+    }
+  })(req, res, next);
+})
+
+
 
 module.exports = router;

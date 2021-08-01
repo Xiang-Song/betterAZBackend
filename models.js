@@ -112,21 +112,31 @@ Events.init ({
     modelName: 'Events' 
 });
 
-class Social extends Model {}
+class Twitter extends Model {}
 
-Social.init({
-    facebook: {
-        type: DataTypes.STRING,
-    },
+Twitter.init({
     twitter: {
         type: DataTypes.STRING,
     }
 },{
     sequelize, 
-    modelName: 'Social' 
+    modelName: 'Twitter' 
 })
 
 sequelize.sync({alter:true});
 
-module.exports = {Users, News, Banner, Locations, Events, Social};
+class Facebook extends Model {}
+
+Facebook.init({
+    facebook: {
+        type: DataTypes.STRING,
+    }
+},{
+    sequelize, 
+    modelName: 'Facebook' 
+})
+
+sequelize.sync({alter:true});
+
+module.exports = {Users, News, Banner, Locations, Events, Twitter, Facebook};
 
