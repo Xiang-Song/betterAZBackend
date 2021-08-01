@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 
-let {Users, News, Banner, Locations, Events} = require('../models');
+let {Users, News, Banner, Locations, Events, Social} = require('../models');
 
 router.post('/register', (req, res, next) => {
   passport.authenticate('register', (err, user, info) => {
@@ -193,6 +193,24 @@ router.post('/deleteLocation',(req, res, next) =>{
         res.status(201).send(
           "one record deleted successfully"
         )
+      
+    }
+  })(req, res, next);
+})
+
+router.post('/social',(req, res, next) =>{
+  passport.authenticate('jwt', { session: false }, async (err, user, info)=> {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.status(401).send(info.message)
+    } else {
+      let social = await Social.create(req.body)
+      res.status(201).send(
+        social
+      )
       
     }
   })(req, res, next);

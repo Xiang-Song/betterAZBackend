@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var{News, Banner, Locations, Events} = require('../models')
+var{News, Banner, Locations, Events, Social} = require('../models')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,6 +30,11 @@ router.get('/events', async function(req, res, next) {
 router.get('/locations', async function(req, res, next) {
   let locations= await Locations.findAll();
   res.json(locations);
+})
+
+router.get('/social', async function(req, res, next) {
+  let social= await Social.findAll();
+  res.json(social);
 })
 
 module.exports = router;

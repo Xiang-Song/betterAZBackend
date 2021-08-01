@@ -100,13 +100,33 @@ Events.init ({
     },
     Location: {
         type: DataTypes.STRING,
+    },
+    notary: {
+        type:DataTypes.INTEGER,
+    },
+    petition: {
+        type:DataTypes.INTEGER,
     }
 },{
     sequelize, 
     modelName: 'Events' 
 });
 
+class Social extends Model {}
+
+Social.init({
+    facebook: {
+        type: DataTypes.STRING,
+    },
+    twitter: {
+        type: DataTypes.STRING,
+    }
+},{
+    sequelize, 
+    modelName: 'Social' 
+})
+
 sequelize.sync({alter:true});
 
-module.exports = {Users, News, Banner, Locations, Events};
+module.exports = {Users, News, Banner, Locations, Events, Social};
 
