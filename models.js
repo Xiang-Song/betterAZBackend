@@ -116,7 +116,7 @@ class Twitter extends Model {}
 
 Twitter.init({
     twitter: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
     }
 },{
     sequelize, 
@@ -129,7 +129,7 @@ class Facebook extends Model {}
 
 Facebook.init({
     facebook: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
     }
 },{
     sequelize, 
