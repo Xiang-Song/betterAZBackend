@@ -32,9 +32,14 @@ router.get('/locations', async function(req, res, next) {
   res.json(locations);
 })
 
-router.get('/social', async function(req, res, next) {
-  let social= await Social.findAll();
-  res.json(social);
+router.get('/twitter', async function(req, res, next) {
+  let twitter= await Twitter.findAll();
+  res.json(twitter);
+})
+
+router.get('/facebook', async function(req, res, next) {
+  let fb= await Facebook.findAll();
+  res.json(fb);
 })
 
 module.exports = router;
