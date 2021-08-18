@@ -94,12 +94,17 @@ Events.init ({
     },
     Date: {
         type: DataTypes.DATE,
+        
     },
     Time: {
         type: DataTypes.STRING,
     },
     Location: {
         type: DataTypes.STRING,
+    },
+    County:{
+        type: DataTypes.STRING,
+        
     },
     notary: {
         type:DataTypes.INTEGER,
