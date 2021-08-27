@@ -94,7 +94,7 @@ Events.init ({
     },
     Date: {
         type: DataTypes.DATE,
-        
+        allowNull: false
     },
     Time: {
         type: DataTypes.STRING,
@@ -104,13 +104,28 @@ Events.init ({
     },
     County:{
         type: DataTypes.STRING,
-        
+        allowNull: false
     },
     notary: {
         type:DataTypes.INTEGER,
     },
     petition: {
         type:DataTypes.INTEGER,
+    },
+    StreetNumber: {
+        type: DataTypes.STRING,
+    },
+    StreetName: {
+        type: DataTypes.STRING,
+    },
+    City:{
+        type: DataTypes.STRING,
+    },
+    Lat: {
+        type:DataTypes.STRING,
+    },
+    Lng: {
+        type:DataTypes.STRING,
     }
 },{
     sequelize, 
