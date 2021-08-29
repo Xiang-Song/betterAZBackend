@@ -76,6 +76,12 @@ Locations.init ({
     },
     County: {
         type: DataTypes.STRING,
+    },
+    Lat: {
+        type:DataTypes.STRING,
+    },
+    Lng: {
+        type:DataTypes.STRING,
     }
 },{
     sequelize, 
